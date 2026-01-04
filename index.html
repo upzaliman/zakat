@@ -405,7 +405,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycby5nQ4CjH19DO9cGeZuhvZFVYN3-EfOCE0_TAyDV_gz4U9t89UGTa2KPJui_flG8bEmSQ/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxHA4KfvX6bcBhnB2RGA78xWzsNE7Gwvlp_0KHpYKPtrRRXdKZIY0jLjViOSFVlG0cj9Q/exec';
 
 function loadDashboard(){
   fetch(scriptURL)
@@ -567,6 +567,32 @@ document.getElementById('sheetSelect').addEventListener('change', function() {
     document.getElementById('dataTableContainer').style.display = 'none';
     msgData.innerHTML = '';
   }
+});
+// === SUBMIT ZAKAT ===
+document.getElementById("formZakat").addEventListener("submit", function(e){
+  e.preventDefault();
+  fetch(scriptURL, { method:"POST", body:new FormData(this) })
+    .then(r=>r.json())
+    .then(()=>{ msgZakat.innerHTML="✅ Data zakat tersimpan"; this.reset(); loadDashboard(); })
+    .catch(()=> msgZakat.innerHTML="❌ Cek di Tab Data apakah sudah tersimpan");
+});
+
+// === SUBMIT BELANJA ===
+document.getElementById("formBelanja").addEventListener("submit", function(e){
+  e.preventDefault();
+  fetch(scriptURL, { method:"POST", body:new FormData(this) })
+    .then(r=>r.json())
+    .then(()=>{ msgBelanja.innerHTML="✅ Data belanja tersimpan"; this.reset(); loadDashboard(); })
+    .catch(()=> msgBelanja.innerHTML="❌ Gagal simpan");
+});
+
+// === SUBMIT PENYALURAN ===
+document.getElementById("formSalur").addEventListener("submit", function(e){
+  e.preventDefault();
+  fetch(scriptURL, { method:"POST", body:new FormData(this) })
+    .then(r=>r.json())
+    .then(()=>{ msgSalur.innerHTML="✅ Data penyaluran tersimpan"; this.reset(); loadDashboard(); })
+    .catch(()=> msgSalur.innerHTML="❌ Gagal simpan");
 });
 </script>
 
