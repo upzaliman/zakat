@@ -574,7 +574,7 @@ document.getElementById("formZakat").addEventListener("submit", function(e){
   fetch(scriptURL, { method:"POST", body:new FormData(this) })
     .then(r=>r.json())
     .then(()=>{ msgZakat.innerHTML="✅ Data zakat tersimpan"; this.reset(); loadDashboard(); })
-    .catch(()=> msgZakat.innerHTML="❌ Cek di Tab Data apakah sudah tersimpan");
+    .catch(()=> msgZakat.innerHTML="❌ cek di tab data apakah sudah tersimpan");
 });
 
 // === SUBMIT BELANJA ===
