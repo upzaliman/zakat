@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistem Zakat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom Style -->
+  <style>
+    body{
+      background:#f1f4f8;
+    }
+    .card-header{
+      font-weight:600;
+    }
+    label{
+      font-weight:500;
+    }
+
+    /* ===== DASHBOARD STYLE ===== */
+    .card-dashboard {
+      color: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    }
+
+    .bg-zakat-uang { background: linear-gradient(135deg,#28a745,#6fdc8c); }
+    .bg-zakat-beras { background: linear-gradient(135deg,#ffc107,#ffe082); color:#333 }
+    .bg-zakat-mal { background: linear-gradient(135deg,#17a2b8,#5bc0de); }
+
+    .bg-fidyah-uang { background: linear-gradient(135deg,#6f42c1,#b197fc); }
+    .bg-fidyah-beras { background: linear-gradient(135deg,#fd7e14,#ffb347); }
+
+    .bg-infaq { background: linear-gradient(135deg,#343a40,#6c757d); }
+
+    .bg-belanja-uang { background: linear-gradient(135deg,#dc3545,#ff7b7b); }
+    .bg-belanja-beras { background: linear-gradient(135deg,#20c997,#63e6be); }
+
+    .bg-penyaluran { background: linear-gradient(135deg,#f59f00,#ffd43b); }
+  </style>
+</head>
+
+<body>
+<div class="container py-4">
+
+<h3 class="text-center fw-bold mb-3">Sistem Pengelolaan Zakat Masjid Al Iman RW 06 Ngaliyan</h3>
+
+<<ul class="nav nav-pills nav-justified mb-4 gap-2">
+  <li class="nav-item">
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dashboard">
+      <i class="fa-solid fa-chart-line me-1"></i> Dashboard
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#zakat">
+      <i class="fa-solid fa-hand-holding-heart me-1"></i> Input Zakat
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#belanja">
+      <i class="fa-solid fa-cart-shopping me-1"></i> Belanja Beras
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#penyaluran">
+      <i class="fa-solid fa-truck-ramp-box me-1"></i> Penyaluran
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#data">
+      <i class="fa-solid fa-table me-1"></i> Data
+    </button>
+  </li>
+</ul>
+
+<div class="tab-content">
+
+<!-- ================= DASHBOARD ================= -->
+<div class="tab-pane fade show active" id="dashboard">
+
+<div class="row g-3 mb-3">
+  <div class="col-md-4"><div class="card bg-success text-white"><div class="card-body">Zakat Uang<br><b id="dUang">Rp 0</b></div></div></div>
+  <div class="col-md-4"><div class="card bg-warning"><div class="card-body">Zakat Beras<br><b id="dBeras">0 Kg</b></div></div></div>
+  <div class="col-md-4"><div class="card bg-info text-white"><div class="card-body">Zakat Mal<br><b id="dMal">Rp 0</b></div></div></div>
+
+  <div class="col-md-4"><div class="card"><div class="card-body">Fidyah Uang<br><b id="dFUang">Rp 0</b></div></div></div>
+  <div class="col-md-4"><div class="card"><div class="card-body">Fidyah Beras<br><b id="dFBeras">0 Kg</b></div></div></div>
+  <div class="col-md-4"><div class="card bg-secondary text-white"><div class="card-body">Infaq<br><b id="dInfaq">Rp 0</b></div></div></div>
+
+  <div class="col-md-6"><div class="card"><div class="card-body">Belanja Beras (Uang)<br><b id="dBelanjaUang">Rp 0</b></div></div></div>
+  <div class="col-md-6"><div class="card"><div class="card-body">Belanja Beras (Kg)<br><b id="dBelanjaBeras">0 Kg</b></div></div></div>
+</div>
+
+<!-- ===== DASHBOARD PENYALURAN ===== -->
+<h5 class="fw-bold mt-4 mb-2">Penyaluran</h5>
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card border-warning">
+      <div class="card-body">
+        Beras Zakat<br>
+        <b id="dSalurBerasZakat">0 Kg</b>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-warning">
+      <div class="card-body">
+        Beras Fidyah<br>
+        <b id="dSalurBerasFidyah">0 Kg</b>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-warning">
+      <div class="card-body">
+        Zakat Mal<br>
+        <b id="dSalurZakatMal">Rp 0</b>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card border-warning">
+      <div class="card-body">
+        Infaq<br>
+        <b id="dSalurInfaq">Rp 0</b>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<!-- ================= END DASHBOARD ================= -->
+
+<!-- ================= INPUT ZAKAT ================= -->
+<div class="tab-pane fade" id="zakat">
+<div class="card shadow-sm">
+<div class="card-header bg-primary text-white">Form Input Zakat</div>
+<div class="card-body">
+
+<form id="formZakat">
+<input type="hidden" name="action" value="zakat">
+
+<label>Tanggal</label>
+<input type="date" name="tanggal" class="form-control mb-3" required>
+
+<label>Nama</label>
+<input type="text" name="nama" class="form-control mb-3">
+
+<label>RT</label>
+<select name="rt" class="form-control mb-3" required>
+  <option value="">Pilih RT</option>
+  <option value="01">01</option>
+  <option value="02">02</option>
+  <option value="03">03</option>
+  <option value="04">04</option>
+  <option value="05">05</option>
+  <option value="06">06</option>
+  <option value="07">07</option>
+  <option value="08">08</option>
+  <option value="09">09</option>
+  <option value="10">10</option>
+  <option value="11">11</option>
+  <option value="12">12</option>
+  <option value="13">13</option>
+</select>
+
+<label>Jumlah Orang Pembayar Zakat Fitrah</label>
+<input type="number" name="jumlah_orang" id="jumlah_orang"
+       class="form-control mb-3" min="0">
+
+<label>Zakat Fitrah</label>
+<div class="mb-3">
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio"
+           name="zakat_fitrah" id="fitrah_uang" value="Uang">
+    <label class="form-check-label" for="fitrah_uang">Uang</label>
+  </div>
+
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio"
+           name="zakat_fitrah" id="fitrah_beras" value="Beras">
+    <label class="form-check-label" for="fitrah_beras">Beras</label>
+  </div>
+</div>
+
+<!-- ===== BERAS ===== -->
+<div id="satuan_beras_container" style="display:none;">
+  <label>Satuan Beras per Orang</label>
+  <select id="satuan_beras" class="form-control mb-3">
+    <option value="">Pilih Satuan</option>
+    <option value="2.5">2.5 kg</option>
+    <option value="2.7">2.7 kg</option>
+    <option value="3">3 kg</option>
+  </select>
+</div>
+
+<div id="beras_container" style="display:none;">
+  <label>Total Beras (Kg)</label>
+  <input type="number" name="beras" id="beras"
+         class="form-control mb-3" readonly>
+</div>
+
+<!-- ===== UANG ===== -->
+<div id="uang_container" style="display:none;">
+  <label>Uang (Rp)</label>
+  <input type="number" name="uang" id="uang"
+         class="form-control mb-3" readonly>
+</div>
+
+<label>Zakat Mal</label>
+<input type="number" name="zakat_mal" class="form-control mb-3">
+
+<label>Fidyah Berupa Beras</label>
+<input type="number" name="fidyah_beras" class="form-control mb-3">
+
+<label>Fidyah Berupa Uang</label>
+<input type="number" name="fidyah_uang" class="form-control mb-3">
+
+<label>Infaq dan Shadaqah</label>
+<input type="number" name="infaq" class="form-control mb-3">
+
+<label>Catatan</label>
+<textarea name="catatan" class="form-control mb-3"></textarea>
+
+<label>Petugas</label>
+<select name="petugas" class="form-control mb-3" required>
+  <option value="">Pilih Petugas</option>
+  <option value="Ari Susanto">Ari Susanto</option>
+  <option value="Hiut Danalam">Hiut Danalam</option>
+  <option value="Taufiq Hidayatullah">Taufiq Hidayatullah</option>
+  <option value="Irfan Maulana">Irfan Maulana</option>
+  <option value="Royyan">Royyan</option>
+  <option value="Sujarno">Sujarno</option>
+</select>
+
+<button class="btn btn-success w-100">💾 Simpan Zakat</button>
+</form>
+
+<div id="msgZakat" class="mt-2 text-center"></div>
+</div>
+</div>
+</div>
+
+<!-- ================= BELANJA BERAS ================= -->
+<div class="tab-pane fade" id="belanja">
+<div class="card shadow-sm">
+<div class="card-header bg-success text-white">Form Belanja Beras</div>
+<div class="card-body">
+
+<form id="formBelanja" enctype="multipart/form-data">
+<input type="hidden" name="action" value="belanja">
+
+<label>Tanggal</label>
+<input type="date" name="tanggal" class="form-control mb-3" required>
+
+<label>Nama Pembeli</label>
+<input type="text" name="nama_pembeli" class="form-control mb-3" required>
+
+<label>Jumlah Uang</label>
+<input type="number" name="jml_uang" class="form-control mb-3" required>
+
+<label>Jumlah Beras (Kg)</label>
+<input type="number" name="jml_beras" class="form-control mb-3" required>
+
+<label>Bukti (Upload Foto/Gambar)</label>
+<input type="file" name="bukti" accept="image/*" capture="environment" class="form-control mb-3" required>
+
+<button class="btn btn-primary w-100">💾 Simpan Belanja</button>
+</form>
+
+<div id="msgBelanja" class="mt-2 text-center"></div>
+</div>
+</div>
+</div>
+
+<!-- ================= PENYALURAN ================= -->
+<div class="tab-pane fade" id="penyaluran">
+<div class="card shadow-sm">
+<div class="card-header bg-warning">Form Penyaluran</div>
+<div class="card-body">
+
+<form id="formSalur">
+<input type="hidden" name="action" value="penyaluran">
+
+<label>Tanggal</label>
+<input type="date" name="tanggal" class="form-control mb-3" required>
+
+<label>Penyaluran Ke</label>
+<select name="penyaluran" class="form-control mb-3" required>
+  <option value="">Pilih Penyaluran Ke</option>
+  <option value="RT 01">RT 01</option>
+  <option value="RT 02">RT 02</option>
+  <option value="RT 03">RT 03</option>
+  <option value="RT 04">RT 04</option>
+  <option value="RT 05">RT 05</option>
+  <option value="RT 06">RT 06</option>
+  <option value="RT 07">RT 07</option>
+  <option value="RT 08">RT 08</option>
+  <option value="RT 09">RT 09</option>
+  <option value="RT 10">RT 10</option>
+  <option value="RT 11">RT 11</option>
+  <option value="RT 12">RT 12</option>
+  <option value="RT 13">RT 13</option>
+  <option value="Di Luar Lingkungan RW 08">Di Luar Lingkungan RW 08</option>
+</select>
+
+<label>Beras Zakat (Kg)</label>
+<input type="number" name="beras_zakat" class="form-control mb-3">
+
+<label>Beras Fidyah (Kg)</label>
+<input type="number" name="beras_fidyah" class="form-control mb-3">
+
+<label>Zakat Mal</label>
+<input type="number" name="zakat_mal" class="form-control mb-3">
+
+<label>Infaq</label>
+<input type="number" name="infaq" class="form-control mb-3">
+
+<label>Penerima</label>
+<input type="text" name="penerima" class="form-control mb-3" required>
+
+<button class="btn btn-dark w-100">💾 Simpan Penyaluran</button>
+</form>
+
+<div id="msgSalur" class="mt-2 text-center"></div>
+</div>
+</div>
+</div>
+
+<!-- ================= TAB DATA ================= -->
+<div class="tab-pane fade" id="data">
+<div class="card shadow-sm">
+<div class="card-header bg-info text-white">Tab Data</div>
+<div class="card-body">
+
+<label>Pilih Sheet</label>
+<select id="sheetSelect" class="form-control mb-3">
+  <option value="">Pilih Sheet</option>
+  <option value="sheet1">Sheet1</option>
+  <option value="sheet2">Sheet2</option>
+  <option value="sheet3">Sheet3</option>
+</select>
+
+<div id="dataTableContainer" class="table-responsive" style="display:none;">
+<table class="table table-striped" id="dataTable">
+  <thead>
+    <tr id="tableHeader"></tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<div id="msgData" class="mt-2 text-center"></div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const scriptURL = 'https://script.google.com/macros/s/AKfycby5nQ4CjH19DO9cGeZuhvZFVYN3-EfOCE0_TAyDV_gz4U9t89UGTa2KPJui_flG8bEmSQ/exec';
+
+function loadDashboard(){
+  fetch(scriptURL)
+    .then(res => res.json())
+    .then(d => {
+
+      // ===== DASHBOARD ATAS =====
+      document.getElementById("dUang").innerText =
+        "Rp " + Number(d.uang).toLocaleString();
+
+      document.getElementById("dBeras").innerText =
+        d.beras + " Kg";
+
+      document.getElementById("dMal").innerText =
+        "Rp " + Number(d.zakatMal).toLocaleString();
+
+      document.getElementById("dFUang").innerText =
+        "Rp " + Number(d.fidyahUang).toLocaleString();
+
+      document.getElementById("dFBeras").innerText =
+        d.fidyahBeras + " Kg";
+
+      document.getElementById("dInfaq").innerText =
+        "Rp " + Number(d.infaq).toLocaleString();
+
+      document.getElementById("dBelanjaUang").innerText =
+        "Rp " + Number(d.totalBelanjaUang).toLocaleString();
+
+      document.getElementById("dBelanjaBeras").innerText =
+        d.totalBelanjaBeras + " Kg";
+
+      // ===== 🔥 PENYALURAN (INI YANG TADI BELUM TERBACA) =====
+      document.getElementById("dSalurBerasZakat").innerText =
+        (d.salurBerasZakat || 0) + " Kg";
+
+      document.getElementById("dSalurBerasFidyah").innerText =
+        (d.salurBerasFidyah || 0) + " Kg";
+
+      document.getElementById("dSalurZakatMal").innerText =
+        "Rp " + Number(d.salurZakatMal || 0).toLocaleString();
+
+      document.getElementById("dSalurInfaq").innerText =
+        "Rp " + Number(d.salurInfaq || 0).toLocaleString();
+    })
+    .catch(err => console.error("Dashboard error:", err));
+}
+
+loadDashboard();
+
+// Fungsi untuk reset visibilitas form
+function resetFormVisibility() {
+  document.getElementById('satuan_beras_container').style.display = 'none';
+  document.getElementById('beras_container').style.display = 'none';
+  document.getElementById('uang_container').style.display = 'none';
+  document.getElementById('beras').value = '';
+  document.getElementById('uang').value = '';
+}
+
+// Logika untuk Zakat Fitrah
+document.querySelectorAll('input[name="zakat_fitrah"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const jumlahOrang = parseInt(document.getElementById('jumlah_orang').value) || 0;
+    const satuanBerasContainer = document.getElementById('satuan_beras_container');
+    const berasContainer = document.getElementById('beras_container');
+    const uangContainer = document.getElementById('uang_container');
+    const berasField = document.getElementById('beras');
+    const uangField = document.getElementById('uang');
+    
+    if (this.value === 'Beras') {
+      satuanBerasContainer.style.display = 'block';
+      berasContainer.style.display = 'block';
+      uangContainer.style.display = 'none';
+      uangField.value = '';
+      updateBeras();
+    } else if (this.value === 'Uang') {
+      satuanBerasContainer.style.display = 'none';
+      berasContainer.style.display = 'none';
+      uangContainer.style.display = 'block';
+      berasField.value = '';
+      uangField.value = jumlahOrang * 50000;
+    }
+  });
+});
+
+// Update total beras otomatis
+function updateBeras() {
+  const jumlahOrang = parseInt(document.getElementById('jumlah_orang').value) || 0;
+  const satuanBeras = parseFloat(document.getElementById('satuan_beras').value) || 0;
+  const berasField = document.getElementById('beras');
+  berasField.value = jumlahOrang * satuanBeras;
+}
+
+document.getElementById('jumlah_orang').addEventListener('input', function() {
+  const selectedFitrah = document.querySelector('input[name="zakat_fitrah"]:checked');
+  if (selectedFitrah) {
+    if (selectedFitrah.value === 'Uang') {
+      document.getElementById('uang').value = parseInt(this.value) * 50000;
+    } else if (selectedFitrah.value === 'Beras') {
+      updateBeras();
+    }
+  }
+});
+
+document.getElementById('satuan_beras').addEventListener('change', updateBeras);
+
+// Inisialisasi visibilitas saat load
+resetFormVisibility();
+
+// Fungsi untuk load data sheet
+function loadSheetData(sheet) {
+  msgData.innerHTML = '⏳ Memuat data...';
+  console.log('Loading sheet:', sheet); // Debugging
+  fetch(scriptURL + '?sheet=' + sheet)
+    .then(r => {
+      console.log('Response status:', r.status); // Debugging
+      return r.json();
+    })
+    .then(data => {
+      console.log('Data received:', data); // Debugging
+      if (Array.isArray(data) && data.length > 0) {
+        const headers = Object.keys(data[0]);
+        const headerRow = document.getElementById('tableHeader');
+        const body = document.getElementById('tableBody');
+        headerRow.innerHTML = '';
+        body.innerHTML = '';
+        headers.forEach(header => {
+          const th = document.createElement('th');
+          th.textContent = header;
+          headerRow.appendChild(th);
+        });
+        data.forEach(row => {
+          const tr = document.createElement('tr');
+          headers.forEach(header => {
+            const td = document.createElement('td');
+            td.textContent = row[header] || '';
+            tr.appendChild(td);
+          });
+          body.appendChild(tr);
+        });
+        document.getElementById('dataTableContainer').style.display = 'block';
+        msgData.innerHTML = '';
+      } else {
+        document.getElementById('dataTableContainer').style.display = 'none';
+        msgData.innerHTML = '⚠️ Tidak ada data';
+      }
+    })
+    .catch(error => {
+      console.error('Error loading sheet data:', error); // Debugging
+      msgData.innerHTML = '⚠️ Gagal memuat data';
+      document.getElementById('dataTableContainer').style.display = 'none';
+    });
+}
+
+document.getElementById('sheetSelect').addEventListener('change', function() {
+  const sheet = this.value;
+  if (sheet) {
+    loadSheetData(sheet);
+  } else {
+    document.getElementById('dataTableContainer').style.display = 'none';
+    msgData.innerHTML = '';
+  }
+});
+</script>
+
+</body>
+</html>
