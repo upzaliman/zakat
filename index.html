@@ -84,93 +84,141 @@
 <!-- ================= DASHBOARD ================= -->
 <div class="tab-pane fade show active" id="dashboard">
 
-<div class="row g-3 mb-3">
- <div class="col-md-4">
-  <div class="card card-dashboard bg-zakat-uang">
-    <div class="card-body">Zakat Uang<br><b id="dUang">Rp 0</b></div>
-  </div>
-</div>
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card card-dashboard bg-zakat-uang h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-money-bill-wave fa-2x mb-2"></i>
+          <h5>Zakat Uang</h5>
+          <b id="dUang" class="fs-4">Rp 0</b>
+        </div>
+      </div>
+    </div>
 
-<div class="col-md-4">
-  <div class="card card-dashboard bg-zakat-beras">
-    <div class="card-body">Zakat Beras<br><b id="dBeras">0 Kg</b></div>
-  </div>
-</div>
+    <div class="col-md-4">
+      <div class="card card-dashboard bg-zakat-beras h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-seedling fa-2x mb-2"></i>
+          <h5>Zakat Beras</h5>
+          <b id="dBeras" class="fs-4">0 Kg</b>
+        </div>
+      </div>
+    </div>
 
-<div class="col-md-4">
-  <div class="card card-dashboard bg-zakat-mal">
-    <div class="card-body">Zakat Mal<br><b id="dMal">Rp 0</b></div>
-  </div>
-</div>
+    <div class="col-md-4">
+      <div class="card card-dashboard bg-zakat-mal h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-coins fa-2x mb-2"></i>
+          <h5>Zakat Mal</h5>
+          <b id="dMal" class="fs-4">Rp 0</b>
+        </div>
+      </div>
+    </div>
 
-<div class="col-md-4">
-  <div class="card card-dashboard bg-fidyah-uang">
-    <div class="card-body">Fidyah Uang<br><b id="dFUang">Rp 0</b></div>
-  </div>
-</div>
+    <div class="col-md-4">
+      <div class="card card-dashboard bg-fidyah-uang h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-hand-holding-dollar fa-2x mb-2"></i>
+          <h5>Fidyah Uang</h5>
+          <b id="dFUang" class="fs-4">Rp 0</b>
+        </div>
+      </div>
+    </div>
 
-<div class="col-md-4">
-  <div class="card card-dashboard bg-fidyah-beras">
-    <div class="card-body">Fidyah Beras<br><b id="dFBeras">0 Kg</b></div>
-  </div>
-</div>
+    <div class="col-md-4">
+      <div class="card card-dashboard bg-fidyah-beras h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-wheat-awn fa-2x mb-2"></i>
+          <h5>Fidyah Beras</h5>
+          <b id="dFBeras" class="fs-4">0 Kg</b>
+        </div>
+      </div>
+    </div>
 
-<div class="col-md-4">
-  <div class="card card-dashboard bg-infaq">
-    <div class="card-body">Infaq<br><b id="dInfaq">Rp 0</b></div>
-  </div>
-</div>
+    <div class="col-md-4">
+      <div class="card card-dashboard bg-infaq h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-heart fa-2x mb-2"></i>
+          <h5>Infaq</h5>
+          <b id="dInfaq" class="fs-4">Rp 0</b>
+        </div>
+      </div>
+    </div>
 
-<div class="col-md-6">
-  <div class="card card-dashboard bg-belanja-uang">
-    <div class="card-body">Belanja Beras (Uang)<br><b id="dBelanjaUang">Rp 0</b></div>
-  </div>
-</div>
+    <div class="col-md-6">
+      <div class="card card-dashboard bg-belanja-uang h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-shopping-cart fa-2x mb-2"></i>
+          <h5>Belanja Beras (Uang)</h5>
+          <b id="dBelanjaUang" class="fs-4">Rp 0</b>
+        </div>
+      </div>
+    </div>
 
-<div class="col-md-6">
-  <div class="card card-dashboard bg-belanja-beras">
-    <div class="card-body">Belanja Beras (Kg)<br><b id="dBelanjaBeras">0 Kg</b></div>
-  </div>
-</div>
-
-</div>
-
-<!-- ===== DASHBOARD PENYALURAN ===== -->
-<h5 class="fw-bold mt-4 mb-2">Penyaluran</h5>
-<div class="row g-3">
-  <div class="col-md-3">
-    <div class="card border-warning">
-      <div class="card-body">
-        Beras Zakat<br>
-        <b id="dSalurBerasZakat">0 Kg</b>
+    <div class="col-md-6">
+      <div class="card card-dashboard bg-belanja-beras h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-weight-scale fa-2x mb-2"></i>
+          <h5>Belanja Beras (Kg)</h5>
+          <b id="dBelanjaBeras" class="fs-4">0 Kg</b>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-md-3">
-    <div class="card border-warning">
-      <div class="card-body">
-        Beras Fidyah<br>
-        <b id="dSalurBerasFidyah">0 Kg</b>
+
+  <!-- ===== TOTAL BERAS YANG DITERIMA ===== -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-12">
+      <div class="card card-dashboard bg-success h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-box-open fa-3x mb-3"></i>
+          <h4>Total Beras yang Diterima</h4>
+          <b id="dTotalBeras" class="fs-3">0 Kg</b>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-md-3">
-    <div class="card border-warning">
-      <div class="card-body">
-        Zakat Mal<br>
-        <b id="dSalurZakatMal">Rp 0</b>
+
+  <!-- ===== DASHBOARD PENYALURAN ===== -->
+  <h5 class="fw-bold mt-4 mb-3 text-center">Penyaluran</h5>
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="card border-warning h-100 shadow-sm">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-truck fa-2x mb-2 text-warning"></i>
+          <h6>Beras Zakat</h6>
+          <b id="dSalurBerasZakat" class="fs-5">0 Kg</b>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-warning h-100 shadow-sm">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-truck fa-2x mb-2 text-warning"></i>
+          <h6>Beras Fidyah</h6>
+          <b id="dSalurBerasFidyah" class="fs-5">0 Kg</b>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-warning h-100 shadow-sm">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-coins fa-2x mb-2 text-warning"></i>
+          <h6>Zakat Mal</h6>
+          <b id="dSalurZakatMal" class="fs-5">Rp 0</b>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-warning h-100 shadow-sm">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-heart fa-2x mb-2 text-warning"></i>
+          <h6>Infaq</h6>
+          <b id="dSalurInfaq" class="fs-5">Rp 0</b>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-md-3">
-    <div class="card border-warning">
-      <div class="card-body">
-        Infaq<br>
-        <b id="dSalurInfaq">Rp 0</b>
-      </div>
-    </div>
-  </div>
-</div>
 
 </div>
 <!-- ================= END DASHBOARD ================= -->
@@ -574,7 +622,7 @@ document.getElementById("formZakat").addEventListener("submit", function(e){
   fetch(scriptURL, { method:"POST", body:new FormData(this) })
     .then(r=>r.json())
     .then(()=>{ msgZakat.innerHTML="✅ Data zakat tersimpan"; this.reset(); loadDashboard(); })
-    .catch(()=> msgZakat.innerHTML="❌ cek di tab data apakah sudah tersimpan");
+    .catch(()=> msgZakat.innerHTML="❌ Gagal simpan");
 });
 
 // === SUBMIT BELANJA ===
@@ -594,6 +642,58 @@ document.getElementById("formSalur").addEventListener("submit", function(e){
     .then(()=>{ msgSalur.innerHTML="✅ Data penyaluran tersimpan"; this.reset(); loadDashboard(); })
     .catch(()=> msgSalur.innerHTML="❌ Gagal simpan");
 });
+
+function loadDashboard(){
+  fetch(scriptURL)
+    .then(res => res.json())
+    .then(d => {
+
+      // ===== DASHBOARD ATAS =====
+      document.getElementById("dUang").innerText =
+        "Rp " + Number(d.uang).toLocaleString();
+
+      document.getElementById("dBeras").innerText =
+        d.beras + " Kg";
+
+      document.getElementById("dMal").innerText =
+        "Rp " + Number(d.zakatMal).toLocaleString();
+
+      document.getElementById("dFUang").innerText =
+        "Rp " + Number(d.fidyahUang).toLocaleString();
+
+      document.getElementById("dFBeras").innerText =
+        d.fidyahBeras + " Kg";
+
+      document.getElementById("dInfaq").innerText =
+        "Rp " + Number(d.infaq).toLocaleString();
+
+      document.getElementById("dBelanjaUang").innerText =
+        "Rp " + Number(d.totalBelanjaUang).toLocaleString();
+
+      document.getElementById("dBelanjaBeras").innerText =
+        d.totalBelanjaBeras + " Kg";
+
+      // ===== TOTAL BERAS YANG DITERIMA =====
+      const totalBeras = (parseFloat(d.beras) || 0) + (parseFloat(d.totalBelanjaBeras) || 0);
+      document.getElementById("dTotalBeras").innerText =
+        totalBeras + " Kg";
+
+      // ===== PENYALURAN =====
+      document.getElementById("dSalurBerasZakat").innerText =
+        (d.salurBerasZakat || 0) + " Kg";
+
+      document.getElementById("dSalurBerasFidyah").innerText =
+        (d.salurBerasFidyah || 0) + " Kg";
+
+      document.getElementById("dSalurZakatMal").innerText =
+        "Rp " + Number(d.salurZakatMal || 0).toLocaleString();
+
+      document.getElementById("dSalurInfaq").innerText =
+        "Rp " + Number(d.salurInfaq || 0).toLocaleString();
+    })
+    .catch(err => console.error("Dashboard error:", err));
+}
+
 </script>
 
 </body>
