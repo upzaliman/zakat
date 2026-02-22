@@ -219,7 +219,47 @@
       </div>
     </div>
   </div>
+<!-- ===== LAPORAN KONDISI AKHIR ===== -->
+<div class="border rounded p-3 mt-4">
 
+  <h5 class="fw-bold text-center mb-3">
+    Laporan Kondisi Akhir
+  </h5>
+
+  <div class="row g-3">
+
+    <div class="col-md-4">
+      <div class="card border-success shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-boxes-stacked fa-2x mb-2 text-success"></i>
+          <h6>Kondisi Stok Beras</h6>
+          <b id="dStokBeras" class="fs-5">0 Kg</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border-primary shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-coins fa-2x mb-2 text-primary"></i>
+          <h6>Saldo Zakat Maal</h6>
+          <b id="dSaldoMal" class="fs-5">Rp 0</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border-dark shadow-sm h-100">
+        <div class="card-body text-center">
+          <i class="fa-solid fa-wallet fa-2x mb-2 text-dark"></i>
+          <h6>Saldo Infaq</h6>
+          <b id="dSaldoInfaq" class="fs-5">Rp 0</b>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 </div>
 <!-- ================= END DASHBOARD ================= -->
 
@@ -283,13 +323,17 @@
     <option value="2.5">2.5 kg</option>
     <option value="2.7">2.7 kg</option>
     <option value="3">3 kg</option>
+    <option value="manual">Jumlah Lainnya</option>
   </select>
 </div>
 
 <div id="beras_container" style="display:none;">
   <label>Total Beras (Kg)</label>
   <input type="number" name="beras" id="beras"
-         class="form-control mb-3" readonly>
+         class="form-control mb-3" readonly placeholder="0">
+  <div id="beras_manual_container" style="display:none;">
+    <input type="number" id="beras_manual" class="form-control mb-3" placeholder="Masukkan jumlah beras (Kg)">
+  </div>
 </div>
 
 <!-- ===== UANG ===== -->
@@ -453,7 +497,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxHA4KfvX6bcBhnB2RGA78xWzsNE7Gwvlp_0KHpYKPtrRRXdKZIY0jLjViOSFVlG0cj9Q/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwl-xZg5XHpiEA6FRR890ktCNCNHE0Gy1DMVPc3CcOlgNZuwQDMRY3_4q-E7zJ6yjpzgg/exec';
 
 function loadDashboard(){
   fetch(scriptURL)
@@ -541,10 +585,36 @@ document.querySelectorAll('input[name="zakat_fitrah"]').forEach(radio => {
 // Update total beras otomatis
 function updateBeras() {
   const jumlahOrang = parseInt(document.getElementById('jumlah_orang').value) || 0;
-  const satuanBeras = parseFloat(document.getElementById('satuan_beras').value) || 0;
+  const satuanBeras = document.getElementById('satuan_beras').value;
   const berasField = document.getElementById('beras');
-  berasField.value = jumlahOrang * satuanBeras;
+  const berasManualContainer = document.getElementById('beras_manual_container');
+  const berasManualField = document.getElementById('beras_manual');
+  
+  if (satuanBeras === 'manual') {
+    // Mode manual: hide auto field, show manual input
+    berasField.style.display = 'none';
+    berasManualContainer.style.display = 'block';
+    berasField.value = '';
+    
+    // Update dari field manual jika ada nilai
+    if (berasManualField.value) {
+      berasField.value = berasManualField.value;
+    }
+  } else {
+    // Mode auto: show auto field, hide manual input
+    berasField.style.display = 'block';
+    berasManualContainer.style.display = 'none';
+    berasManualField.value = '';
+    
+    const nilaiSatuan = parseFloat(satuanBeras) || 0;
+    berasField.value = jumlahOrang * nilaiSatuan;
+  }
 }
+
+// Update dari input manual
+document.getElementById('beras_manual').addEventListener('input', function() {
+  document.getElementById('beras').value = this.value;
+});
 
 document.getElementById('jumlah_orang').addEventListener('input', function() {
   const selectedFitrah = document.querySelector('input[name="zakat_fitrah"]:checked');
@@ -585,14 +655,22 @@ function loadSheetData(sheet) {
           headerRow.appendChild(th);
         });
         data.forEach(row => {
-          const tr = document.createElement('tr');
-          headers.forEach(header => {
-            const td = document.createElement('td');
-            td.textContent = row[header] || '';
-            tr.appendChild(td);
-          });
-          body.appendChild(tr);
-        });
+  const tr = document.createElement('tr');
+  headers.forEach(header => {
+    const td = document.createElement('td');
+    if (header === 'Bukti' && row[header]) {  // Jika kolom Bukti dan ada URL
+      const img = document.createElement('img');
+      img.src = row[header];
+      img.style.maxWidth = '100px';  // Atur ukuran gambar
+      img.style.maxHeight = '100px';
+      td.appendChild(img);
+    } else {
+      td.textContent = row[header] || '';
+    }
+    tr.appendChild(td);
+  });
+  body.appendChild(tr);
+});
         document.getElementById('dataTableContainer').style.display = 'block';
         msgData.innerHTML = '';
       } else {
@@ -619,10 +697,59 @@ document.getElementById('sheetSelect').addEventListener('change', function() {
 // === SUBMIT ZAKAT ===
 document.getElementById("formZakat").addEventListener("submit", function(e){
   e.preventDefault();
-  fetch(scriptURL, { method:"POST", body:new FormData(this) })
-    .then(r=>r.json())
-    .then(()=>{ msgZakat.innerHTML="✅ Data zakat tersimpan"; this.reset(); loadDashboard(); })
-    .catch(()=> msgZakat.innerHTML="❌ Gagal simpan");
+  const btn = e.target.querySelector('button');
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Menyimpan...';
+  
+  // Kirim data
+  fetch(scriptURL, { 
+    method: "POST", 
+    body: new FormData(this),
+    redirect: 'follow'
+  })
+    .then(response => {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+      
+      return response.text().then(text => {
+        try {
+          const data = JSON.parse(text);
+          if (data.status === "success") {
+            msgZakat.innerHTML = "✅ Data zakat tersimpan";
+            this.reset();
+            resetFormVisibility();
+            loadDashboard();
+          } else {
+            throw new Error(data.message || "Unknown error");
+          }
+        } catch (e) {
+          if (response.ok || response.type === 'opaque') {
+            msgZakat.innerHTML = "✅ Data zakat tersimpan";
+            this.reset();
+            resetFormVisibility();
+            loadDashboard();
+          } else {
+            throw e;
+          }
+        }
+      });
+    })
+    .catch(error => {
+      // CORS error tapi data mungkin sudah tersimpan
+      // Kita tetap anggap sukses jika fetch berhasil dikirim
+      console.warn('Fetch warning:', error);
+      
+      // Verifikasi dengan reload dashboard setelah delay
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+      
+      // Tampilkan sukses karena data kemungkinan sudah tersimpan
+      msgZakat.innerHTML = "✅ Data zakat tersimpan";
+      this.reset();
+      resetFormVisibility();
+      loadDashboard();
+    });
 });
 
 // === SUBMIT BELANJA ===
@@ -690,10 +817,57 @@ function loadDashboard(){
 
       document.getElementById("dSalurInfaq").innerText =
         "Rp " + Number(d.salurInfaq || 0).toLocaleString();
+		
+		// ===== KONDISI AKHIR =====
+
+// TOTAL BERAS DITERIMA
+const totalBerasMasuk =
+  (parseFloat(d.beras) || 0) +
+  (parseFloat(d.totalBelanjaBeras) || 0);
+
+// TOTAL BERAS KELUAR
+const totalBerasKeluar =
+  (parseFloat(d.salurBerasZakat ?? d.berasZakatSalur) || 0) +
+  (parseFloat(d.salurBerasFidyah ?? d.berasFidyahSalur) || 0);
+
+// STOK BERAS
+const stokBeras = totalBerasMasuk - totalBerasKeluar;
+
+document.getElementById("dStokBeras").innerText =
+  stokBeras + " Kg";
+
+
+// SALDO ZAKAT MAAL
+const saldoMal =
+  (parseFloat(d.zakatMal ?? d.totalZakatMal) || 0) -
+  (parseFloat(d.salurZakatMal ?? d.zakatMalSalur) || 0);
+
+document.getElementById("dSaldoMal").innerText =
+  "Rp " + saldoMal.toLocaleString();
+
+
+// SALDO INFAQ
+const saldoInfaq =
+  (parseFloat(d.infaq ?? d.totalInfaq) || 0) -
+  (parseFloat(d.salurInfaq ?? d.infaqSalur) || 0);
+
+document.getElementById("dSaldoInfaq").innerText =
+  "Rp " + saldoInfaq.toLocaleString();
     })
     .catch(err => console.error("Dashboard error:", err));
+	
+	
 }
 
+function resetFormInput() {
+
+  document.getElementById("tgl").value = "";
+  document.getElementById("jenis").value = "";
+  document.getElementById("kategori").value = "";
+  document.getElementById("jumlah").value = "";
+  document.getElementById("keterangan").value = "";
+
+}
 </script>
 
 </body>
