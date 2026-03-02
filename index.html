@@ -44,37 +44,56 @@
 
     .bg-penyaluran { background: linear-gradient(135deg,#f59f00,#ffd43b); }
 	
-	/* ===== HEADER BAZNAS ===== */
+	/* ===== HEADER BAZNAS (FIX COMPACT) ===== */
 .header-baznas {
   background: linear-gradient(90deg, #1b5e20, #2e7d32);
   color: #fff;
-  padding: 12px 20px;
+  padding: 8px 12px; /* LEBIH TIPIS */
 }
 
 .header-baznas .header-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .header-baznas img {
-  height: 70px;
+  height: 50px; /* DIPERKECIL (kunci utama) */
+  max-width: 100%;
 }
 
 .header-baznas .title {
   text-align: center;
   flex: 1;
+  line-height: 1.2;
 }
 
 .header-baznas .title h4 {
   margin: 0;
+  font-size: 16px; /* KECIL & RAPAT */
   font-weight: 700;
 }
 
 .header-baznas .title small {
   display: block;
-  font-size: 13px;
+  font-size: 11px;
   opacity: 0.9;
+}
+
+/* ===== MOBILE OPTIMIZATION ===== */
+@media (max-width: 576px) {
+  .header-baznas img {
+    height: 40px;
+  }
+
+  .header-baznas .title h4 {
+    font-size: 14px;
+  }
+
+  .header-baznas .title small {
+    font-size: 10px;
+  }
 }
 	
   </style>
