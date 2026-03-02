@@ -43,10 +43,69 @@
     .bg-belanja-beras { background: linear-gradient(135deg,#20c997,#63e6be); }
 
     .bg-penyaluran { background: linear-gradient(135deg,#f59f00,#ffd43b); }
+	
+	/* ===== HEADER BAZNAS ===== */
+.header-baznas {
+  background: linear-gradient(90deg, #1b5e20, #2e7d32);
+  color: #fff;
+  padding: 12px 20px;
+}
+
+.header-baznas .header-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-baznas img {
+  height: 70px;
+}
+
+.header-baznas .title {
+  text-align: center;
+  flex: 1;
+}
+
+.header-baznas .title h4 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.header-baznas .title small {
+  display: block;
+  font-size: 13px;
+  opacity: 0.9;
+}
+	
   </style>
 </head>
 
 <body>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header-baznas">
+  <div class="header-wrap">
+
+    <!-- LOGO KIRI -->
+    <img src="https://drive.google.com/thumbnail?id=1Dfw4w7izvO45kVrbMJ0xdeh0Wz1oEpcO&sz=w300" alt="UPZ Masjid Al-Iman">
+
+    <!-- JUDUL -->
+    <div class="title">
+      <h4>BAZNAS UNIT PENGUMPUL ZAKAT (UPZ) MASJID AL-IMAN</h4>
+      <small>
+        RW VI – NGALIYAN – SEMARANG<br>
+        Sekretariat: Jln. Masjid Al-Iman Karosih Selatan XI Ngaliyan Kota Semarang
+      </small>
+    </div>
+
+    <!-- LOGO KANAN -->
+    <img src="https://drive.google.com/thumbnail?id=1omTpsyka0bPPJ1czgA5-GIIdihgkJK3C&sz=w300" alt="BAZNAS">
+  </div>
+</div>
+<!-- ===== END HEADER ===== -->
+
+<div class="container py-4">
 <div class="container py-4">
 
 <h3 class="text-center fw-bold mb-3">Sistem Pengelolaan Zakat, Infaq, dan Shadaqah Masjid Al Iman RW 06 Ngaliyan</h3>
@@ -383,7 +442,7 @@
 <div class="card-header bg-success text-white">Form Belanja Beras</div>
 <div class="card-body">
 
-<form id="formBelanja" enctype="multipart/form-data">
+<form id="formBelanja">
 <input type="hidden" name="action" value="belanja">
 
 <label>Tanggal</label>
@@ -399,16 +458,24 @@
 <input type="number" name="jml_beras" class="form-control mb-3" required>
 
 <label>Bukti (Upload Foto/Gambar)</label>
-<input type="file" name="bukti" accept="image/*" capture="environment" class="form-control mb-3" required>
+<input type="file" name="bukti" id="buktiInput" accept="image/*" capture="environment" class="form-control mb-3" required>
 
-<button class="btn btn-primary w-100">💾 Simpan Belanja</button>
+<!-- Hidden input untuk menyimpan base64 -->
+<input type="hidden" name="bukti_base64" id="buktiBase64">
+
+<!-- Preview gambar -->
+<div id="previewContainer" class="mb-3" style="display:none;">
+  <img id="previewImage" src="" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+  <p class="text-muted small mt-1" id="fileInfo"></p>
+</div>
+
+<button type="submit" class="btn btn-primary w-100">💾 Simpan Belanja</button>
 </form>
 
 <div id="msgBelanja" class="mt-2 text-center"></div>
 </div>
 </div>
 </div>
-
 <!-- ================= PENYALURAN ================= -->
 <div class="tab-pane fade" id="penyaluran">
 <div class="card shadow-sm">
@@ -497,7 +564,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwl-xZg5XHpiEA6FRR890ktCNCNHE0Gy1DMVPc3CcOlgNZuwQDMRY3_4q-E7zJ6yjpzgg/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxWM8PBn-AzqaXQg5jj3Dgk3HxUdcj0VR7TIvvNnKDf3pXuTthxlzEiUJFvNpA_SNKfQg/exec';
 
 function loadDashboard(){
   fetch(scriptURL)
@@ -752,15 +819,126 @@ document.getElementById("formZakat").addEventListener("submit", function(e){
     });
 });
 
-// === SUBMIT BELANJA ===
-document.getElementById("formBelanja").addEventListener("submit", function(e){
-  e.preventDefault();
-  fetch(scriptURL, { method:"POST", body:new FormData(this) })
-    .then(r=>r.json())
-    .then(()=>{ msgBelanja.innerHTML="✅ Data belanja tersimpan"; this.reset(); loadDashboard(); })
-    .catch(()=> msgBelanja.innerHTML="❌ Gagal simpan");
+// === KONVERSI FILE KE BASE64 ===
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
+// === PREVIEW GAMBAR ===
+document.getElementById('buktiInput').addEventListener('change', async function(e) {
+  const file = e.target.files[0];
+  const previewContainer = document.getElementById('previewContainer');
+  const previewImage = document.getElementById('previewImage');
+  const fileInfo = document.getElementById('fileInfo');
+  const buktiBase64 = document.getElementById('buktiBase64');
+  
+  if (file) {
+    // Validasi tipe file
+    if (!file.type.startsWith('image/')) {
+      alert('File harus berupa gambar!');
+      this.value = '';
+      return;
+    }
+    
+    // Validasi ukuran (maks 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Ukuran file maksimal 5MB!');
+      this.value = '';
+      return;
+    }
+    
+    try {
+      // Konversi ke base64
+      const base64 = await fileToBase64(file);
+      buktiBase64.value = base64;
+      
+      // Tampilkan preview
+      previewImage.src = base64;
+      fileInfo.textContent = `File: ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+      previewContainer.style.display = 'block';
+      
+      console.log('File converted to base64, length:', base64.length);
+    } catch (error) {
+      console.error('Error converting file:', error);
+      alert('Gagal memproses gambar!');
+    }
+  } else {
+    previewContainer.style.display = 'none';
+    buktiBase64.value = '';
+  }
 });
 
+// === SUBMIT BELANJA ===
+document.getElementById("formBelanja").addEventListener("submit", async function(e){
+  e.preventDefault();
+  
+  const btn = e.target.querySelector('button');
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Menyimpan...';
+  
+  const buktiBase64 = document.getElementById('buktiBase64').value;
+  
+  if (!buktiBase64) {
+    alert('Silakan upload bukti foto terlebih dahulu!');
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+    return;
+  }
+  
+  try {
+    const formData = new FormData(this);
+    
+    // Debug: cek ukuran data
+    console.log('Submitting form...');
+    console.log('Base64 length:', buktiBase64.length);
+    
+    const response = await fetch(scriptURL, { 
+      method: "POST", 
+      body: formData,
+      redirect: 'follow'
+    });
+    
+    const text = await response.text();
+    console.log('Response:', text);
+    
+    try {
+      const data = JSON.parse(text);
+      if (data.status === "success") {
+        msgBelanja.innerHTML = "✅ Data belanja tersimpan<br><a href='" + data.buktiUrl + "' target='_blank'>Lihat Bukti</a>";
+        this.reset();
+        document.getElementById('previewContainer').style.display = 'none';
+        document.getElementById('buktiBase64').value = '';
+        loadDashboard();
+      } else {
+        throw new Error(data.message || "Unknown error");
+      }
+    } catch (e) {
+      // Jika response bukan JSON tapi sukses
+      if (response.ok || response.type === 'opaque') {
+        msgBelanja.innerHTML = "✅ Data belanja tersimpan";
+        this.reset();
+        document.getElementById('previewContainer').style.display = 'none';
+        document.getElementById('buktiBase64').value = '';
+        loadDashboard();
+      } else {
+        throw e;
+      }
+    }
+    
+  } catch (error) {
+    console.error('Error:', error);
+    msgBelanja.innerHTML = "❌ Gagal menyimpan: " + error.message;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+});
 // === SUBMIT PENYALURAN ===
 document.getElementById("formSalur").addEventListener("submit", function(e){
   e.preventDefault();
