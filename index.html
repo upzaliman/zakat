@@ -111,7 +111,7 @@
 
     <!-- JUDUL -->
     <div class="title">
-      <h4>BAZNAS UNIT PENGUMPUL ZAKAT (UPZIS) MASJID AL-IMAN</h4>
+      <h4>BAZNAS UNIT PENGUMPUL ZAKAT (UPZ) MASJID AL-IMAN</h4>
       <small>
         RW VI – NGALIYAN – SEMARANG<br>
         Sekretariat: Jln. Masjid Al-Iman Karosih Selatan XI Ngaliyan Kota Semarang
@@ -129,7 +129,7 @@
 
 <h3 class="text-center fw-bold mb-3">Sistem Pengelolaan Zakat, Infaq, dan Shadaqah Masjid Al Iman RW 06 Ngaliyan</h3>
 
-<<ul class="nav nav-pills nav-justified mb-4 gap-2">
+<ul class="nav nav-pills nav-justified mb-4 gap-2">
   <li class="nav-item">
     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dashboard">
       <i class="fa-solid fa-chart-line me-1"></i> Dashboard
@@ -446,14 +446,9 @@
   <option value="Ari Susanto">Ari Susanto</option>
   <option value="Hiut Danalam">Hiut Danalam</option>
   <option value="Taufiq Hidayatullah">Taufiq Hidayatullah</option>
-  <option value="Irfan Maulana Ahmad">Irfan Maulana Ahmad</option>
-  <option value="M. Nabil Al-Hamany">M. Nabil Al-Hamany</option>
+  <option value="Irfan Maulana">Irfan Maulana</option>
+  <option value="Royyan">Royyan</option>
   <option value="Sujarno">Sujarno</option>
-	<option value="Albasori">Albasori</option>
-	<option value="Royyan">Royyan</option>
-	<option value="Althaf Haniif">Althaf Haniif</option>
-	<option value="Nunung Jamiat">Nunung Jamiat</option>
-	<option value="Vega">Vega</option>
 </select>
 
 <button class="btn btn-success w-100">💾 Simpan Zakat</button>
@@ -592,7 +587,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxWM8PBn-AzqaXQg5jj3Dgk3HxUdcj0VR7TIvvNnKDf3pXuTthxlzEiUJFvNpA_SNKfQg/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzkwb_y_7-VZOZ_fULtN7HRcyv2GNP38on1-jSlc8qFvgtUvCIjmLDTcpsXb2qLCZJt-Q/exec';
 
 function loadDashboard(){
   fetch(scriptURL)
@@ -604,7 +599,7 @@ function loadDashboard(){
         "Rp " + Number(d.uang).toLocaleString();
 
       document.getElementById("dBeras").innerText =
-        d.beras + " Kg";
+  formatKg(d.beras) + " Kg";
 
       document.getElementById("dMal").innerText =
         "Rp " + Number(d.zakatMal).toLocaleString();
@@ -622,7 +617,7 @@ function loadDashboard(){
         "Rp " + Number(d.totalBelanjaUang).toLocaleString();
 
       document.getElementById("dBelanjaBeras").innerText =
-        d.totalBelanjaBeras + " Kg";
+  formatKg(d.totalBelanjaBeras) + " Kg";
 
       // ===== 🔥 PENYALURAN (INI YANG TADI BELUM TERBACA) =====
       document.getElementById("dSalurBerasZakat").innerText =
@@ -986,7 +981,7 @@ function loadDashboard(){
         "Rp " + Number(d.uang).toLocaleString();
 
       document.getElementById("dBeras").innerText =
-        d.beras + " Kg";
+  formatKg(d.beras) + " Kg";
 
       document.getElementById("dMal").innerText =
         "Rp " + Number(d.zakatMal).toLocaleString();
@@ -995,7 +990,7 @@ function loadDashboard(){
         "Rp " + Number(d.fidyahUang).toLocaleString();
 
       document.getElementById("dFBeras").innerText =
-        d.fidyahBeras + " Kg";
+  formatKg(d.fidyahBeras) + " Kg";
 
       document.getElementById("dInfaq").innerText =
         "Rp " + Number(d.infaq).toLocaleString();
@@ -1004,16 +999,18 @@ function loadDashboard(){
         "Rp " + Number(d.totalBelanjaUang).toLocaleString();
 
       document.getElementById("dBelanjaBeras").innerText =
-        d.totalBelanjaBeras + " Kg";
+  formatKg(d.totalBelanjaBeras) + " Kg";
 
       // ===== TOTAL BERAS YANG DITERIMA =====
-      const totalBeras = (parseFloat(d.beras) || 0) + (parseFloat(d.totalBelanjaBeras) || 0);
-      document.getElementById("dTotalBeras").innerText =
-        totalBeras + " Kg";
+      const totalBeras =
+  (parseFloat(d.beras) || 0) +
+  (parseFloat(d.totalBelanjaBeras) || 0);
+  document.getElementById("dTotalBeras").innerText =
+  formatKg(totalBeras) + " Kg";
 
       // ===== PENYALURAN =====
       document.getElementById("dSalurBerasZakat").innerText =
-        (d.salurBerasZakat || 0) + " Kg";
+        formatKg(d.salurBerasZakat || 0) + " Kg";
 
       document.getElementById("dSalurBerasFidyah").innerText =
         (d.salurBerasFidyah || 0) + " Kg";
@@ -1040,7 +1037,7 @@ const totalBerasKeluar =
 const stokBeras = totalBerasMasuk - totalBerasKeluar;
 
 document.getElementById("dStokBeras").innerText =
-  stokBeras + " Kg";
+  formatKg(stokBeras) + " Kg";
 
 
 // SALDO ZAKAT MAAL
@@ -1073,6 +1070,12 @@ function resetFormInput() {
   document.getElementById("jumlah").value = "";
   document.getElementById("keterangan").value = "";
 
+}
+function formatKg(angka) {
+  return Number(angka).toLocaleString('id-ID', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 }
 </script>
 
